@@ -14,7 +14,8 @@ public class Comment {
     private final String commentUpdateDate;     // 댓글 수정 시간
 
     @Builder
-    public Comment(Long commentSeq, Long boardSeq, Long userSeq, String commentContent, String commentUploadDate, String commentUpdateDate) {
+    public Comment(Long commentSeq, Long boardSeq, Long userSeq, String commentContent,
+                   String commentUploadDate, String commentUpdateDate) {
         this.commentSeq = commentSeq;
         this.boardSeq = boardSeq;
         this.userSeq = userSeq;
