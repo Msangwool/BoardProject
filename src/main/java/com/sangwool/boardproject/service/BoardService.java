@@ -2,6 +2,7 @@ package com.sangwool.boardproject.service;
 
 import com.sangwool.boardproject.dto.BoardUploadDto;
 
+import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
@@ -10,7 +11,7 @@ public interface BoardService {
      * getBoards - BoardService |
      * @return 게시글 목록을 반환한다.
      */
-    Map<String, String> getBoards();
+    List<Map<String, String>> getBoards();
 
     /**
      * getDetailsBoards - BoardService |

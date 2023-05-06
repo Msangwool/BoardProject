@@ -2,6 +2,7 @@ package com.sangwool.boardproject.service;
 
 import com.sangwool.boardproject.dto.NestedCommentUploadDto;
 
+import java.util.List;
 import java.util.Map;
 
 public interface NestedCommentService {
@@ -10,7 +11,7 @@ public interface NestedCommentService {
      * getAllNestedComments - NestedCommentService |
      * @return 모든 대댓글을 반환한다.
      */
-    Map<String, String> getAllNestedComments();
+    List<Map<String, String>> getAllNestedComments();
 
     /**
      * getDetailsNestedComment - NestedCommentService |
@@ -24,7 +25,7 @@ public interface NestedCommentService {
      * @param commentSeq 댓글 Sequence 번호를 받아온다.
      * @return 해당 댓글 Sequence 번호를 가진 모든 대댓글을 반환한다.
      */
-    Map<String, String> getNestedCommentsByCommentSeq(Long commentSeq);
+    List<Map<String, String>> getNestedCommentsByCommentSeq(Long commentSeq);
 
     /**
      * createNestedComments - NestedCommentService |
