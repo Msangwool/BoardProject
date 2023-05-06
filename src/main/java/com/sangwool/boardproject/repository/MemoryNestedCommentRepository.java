@@ -26,6 +26,7 @@ public class MemoryNestedCommentRepository implements NestedCommentRepository {
                 .userSeq(nestedCommentUploadDto.getUserSeq())
                 .nestedCommentContent(nestedCommentUploadDto.getNestedCommentContent())
                 .nestedCommentUploadDate(new Date(System.currentTimeMillis()).toString())
+                .nestedCommentUpdateDate(new Date(System.currentTimeMillis()).toString())
                 .build());
     }
 

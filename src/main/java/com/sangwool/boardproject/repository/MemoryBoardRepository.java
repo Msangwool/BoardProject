@@ -26,6 +26,7 @@ public class MemoryBoardRepository implements BoardRepository {
                 .userSeq(boardUploadDto.getUserSeq())
                 .boardContent(boardUploadDto.getBoardContent())
                 .boardUploadDate(new Date(System.currentTimeMillis()).toString())
+                .boardUpdateDate(new Date(System.currentTimeMillis()).toString())
                 .build());
     }
 

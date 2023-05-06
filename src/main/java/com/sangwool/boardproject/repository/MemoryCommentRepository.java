@@ -23,6 +23,7 @@ public class MemoryCommentRepository implements CommentRepository {
                 .userSeq(commentUploadDto.getUserSeq())
                 .commentContent(commentUploadDto.getCommentContent())
                 .commentUploadDate(new Date(System.currentTimeMillis()).toString())
+                .commentUpdateDate(new Date(System.currentTimeMillis()).toString())
                 .build());
     }
 
