@@ -1,5 +1,8 @@
 package com.sangwool.boardproject.service;
 
+import com.sangwool.boardproject.dto.NestedCommentDeleteDto;
+import com.sangwool.boardproject.dto.NestedCommentDto;
+import com.sangwool.boardproject.dto.NestedCommentUpdateDto;
 import com.sangwool.boardproject.dto.NestedCommentUploadDto;
 
 import java.util.List;
@@ -31,22 +34,22 @@ public interface NestedCommentService {
      * createNestedComments - NestedCommentService |
      * 대댓글을 생성한다.
      * @param nestedCommentUploadDto 대댓글 생성에 필요한 정보를 받아온다.
-     * @return 대댓글 생성 성공 여부를 반환한다.
+     * @return client 에게 필요한 대댓글 정보를 반환한다.
      */
-    boolean createNestedComments(NestedCommentUploadDto nestedCommentUploadDto);
+    NestedCommentDto createNestedComments(NestedCommentUploadDto nestedCommentUploadDto);
 
     /**
      * updateNestedComments - NestedCommentService |
      * 대댓글을 수정한다.
-     * @param nestedCommentUploadDto 대댓글 수정에 필요한 정보를 받아온다.
-     * @return 대댓글 수정 성공 여부를 반환한다.
+     * @param nestedCommentUpdateDto 대댓글 수정에 필요한 정보를 받아온다.
+     * @return client 에게 필요한 대댓글 정보를 반환한다.
      */
-    boolean updateNestedComments(NestedCommentUploadDto nestedCommentUploadDto);
+    NestedCommentDto updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto);
 
     /**
      * deleteNestedComments - NestedCommentService |
-     * @param nestedCommentSeq 대댓글 삭제에 필요한 정보를 받아온다.
+     * @param nestedCommentDeleteDto 대댓글 삭제에 필요한 정보를 받아온다.
      * @return 대댓글 삭제 성공 여부를 반환한다.
      */
-    boolean deleteNestedComments(Long nestedCommentSeq);
+    boolean deleteNestedComments(NestedCommentDeleteDto nestedCommentDeleteDto);
 }

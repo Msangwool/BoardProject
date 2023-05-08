@@ -1,5 +1,8 @@
 package com.sangwool.boardproject.service;
 
+import com.sangwool.boardproject.dto.CommentDeleteDto;
+import com.sangwool.boardproject.dto.CommentDto;
+import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 
 import java.util.List;
@@ -33,23 +36,23 @@ public interface CommentService {
      * createComments - CommentService |
      * 댓글을 생성한다.
      * @param commentUploadDto 댓글 생성에 필요한 정보를 받아온다.
-     * @return 댓글 생성 성공 여부를 반환한다.
+     * @return client 에게 필요한 댓글 정보를 반환한다..
      */
-    boolean createComments(CommentUploadDto commentUploadDto);
+    CommentDto createComments(CommentUploadDto commentUploadDto);
 
     /**
      * updateComments - CommentService |
      * 댓글을 수정한다.
-     * @param commentUploadDto 댓글 수정에 필요한 정보를 받아온다.
-     * @return 댓글 수정 성공 여부를 반환한다.
+     * @param commentUpdateDto 댓글 수정에 필요한 정보를 받아온다.
+     * @return client 에게 필요한 댓글 정보를 반환한다..
      */
-    boolean updateComments(CommentUploadDto commentUploadDto);
+    CommentDto updateComments(CommentUpdateDto commentUpdateDto);
 
     /**
      * getDetailsComment - CommentService |
      * 댓글을 삭제한다. 대댓글도 모두 삭제한다.
-     * @param commentSeq 댓글 Sequence 를 받아온다.
+     * @param commentDeleteDto 댓글 삭제에 필요한 정보를 받아온다.
      * @return 댓글 삭제 성공여부를 반환한다.
      */
-    boolean deleteComments(Long commentSeq);
+    boolean deleteComments(CommentDeleteDto commentDeleteDto);
 }

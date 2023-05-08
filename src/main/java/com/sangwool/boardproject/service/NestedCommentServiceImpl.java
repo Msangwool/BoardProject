@@ -1,5 +1,8 @@
 package com.sangwool.boardproject.service;
 
+import com.sangwool.boardproject.dto.NestedCommentDeleteDto;
+import com.sangwool.boardproject.dto.NestedCommentDto;
+import com.sangwool.boardproject.dto.NestedCommentUpdateDto;
 import com.sangwool.boardproject.dto.NestedCommentUploadDto;
 import com.sangwool.boardproject.entity.NestedComment;
 import com.sangwool.boardproject.repository.NestedCommentRepository;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -34,27 +38,46 @@ public class NestedCommentServiceImpl implements NestedCommentService {
     }
 
     @Override
-    public boolean createNestedComments(NestedCommentUploadDto nestedCommentUploadDto) {
+    public NestedCommentDto createNestedComments(NestedCommentUploadDto nestedCommentUploadDto) {
 
         try {
 
-            nestedCommentRepository.save(nestedCommentUploadDto);
-            return true;
-
+            NestedComment nestedComment = nestedCommentRepository.save(nestedCommentUploadDto);
+            return NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUploadDate());
         } catch (Exception e) {
             log.info("Exception = {}", e.getMessage());
-            return false;
+            return null;
         }
     }
 
     @Override
-    public boolean updateNestedComments(NestedCommentUploadDto nestedCommentUploadDto) {
-        return false;
+    public NestedCommentDto updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto) {
+
+        try {
+
+            NestedComment nestedCommentUpdate = nestedCommentRepository.updateNestedComment(nestedCommentUpdateDto);
+            return NestedCommentDto.buildDto(nestedCommentUpdate, nestedCommentUpdate.getNestedCommentUpdateDate());
+        } catch (Exception e) {
+            log.debug("Exception = {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public boolean deleteNestedComments(Long nestedCommentSeq) {
-        return false;
+    public boolean deleteNestedComments(NestedCommentDeleteDto nestedCommentDeleteDto) {
+
+        Long nestedCommentSeq = nestedCommentDeleteDto.getNestedCommentSeq();
+
+        try {
+            nestedCommentRepository.deleteNestedComment(nestedCommentSeq);
+            return true;
+        } catch (NoSuchElementException e) {
+            log.debug("NoSuchElementException = {}", e.getMessage());
+            return false;
+        } catch (Exception e) {
+            log.debug("Exception = {}", e.getMessage());
+            return false;
+        }
     }
 
     private static Map<String, String> makeMap(NestedComment nestedComment) {

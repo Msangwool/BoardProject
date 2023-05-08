@@ -1,5 +1,8 @@
 package com.sangwool.boardproject.service;
 
+import com.sangwool.boardproject.dto.BoardDeleteDto;
+import com.sangwool.boardproject.dto.BoardDto;
+import com.sangwool.boardproject.dto.BoardUpdateDto;
 import com.sangwool.boardproject.dto.BoardUploadDto;
 
 import java.util.List;
@@ -24,21 +27,23 @@ public interface BoardService {
      * createBoards - BoardService |
      * 게시글을 생성한다.
      * @param boardUploadDto 게시글 생성에 필요한 게시글 정보를 받아온다.
-     * @return 게시글 생성의 성공 여부를 반환한다.
+     * @return client 에게 제공할 게시판 내용을 반환한다.
      */
-    boolean createBoards(BoardUploadDto boardUploadDto);
+    BoardDto createBoards(BoardUploadDto boardUploadDto);
 
     /**
      * updateBoards - BoardService |
-     * @param boardUploadDto 업데이트에 필요한 게시글 정보를 받아온다.
-     * @return 게시글 업데이트의 성공 여부를 반환한다.
+     * 게시글을 수정한다.
+     * @param boardUpdateDto 업데이트에 필요한 게시글 정보를 받아온다.
+     * @return client 에게 제공할 게시판 내용을 반환한다.
      */
-    boolean updateBoards(BoardUploadDto boardUploadDto);
+    BoardDto updateBoards(BoardUpdateDto boardUpdateDto);
 
     /**
      * deleteBoards - BoardService |
-     * @param boardSeq 게시글 Sequence 번호를 받아온다.
+     * 게시판을 삭제한다. 해당 게시판으로 작성된 모든 댓글도 삭제한다.
+     * @param boardDeleteDto 게시글 삭제에 필요한 DTO 정보를 받아온다.
      * @return 게시글 삭제의 성공 여부를 반환한다.
      */
-    boolean deleteBoards(Long boardSeq);
+    boolean deleteBoards(BoardDeleteDto boardDeleteDto);
 }

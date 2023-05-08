@@ -1,8 +1,13 @@
 package com.sangwool.boardproject.service;
 
+import com.sangwool.boardproject.dto.CommentDeleteDto;
+import com.sangwool.boardproject.dto.CommentDto;
+import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 import com.sangwool.boardproject.entity.Comment;
+import com.sangwool.boardproject.entity.NestedComment;
 import com.sangwool.boardproject.repository.CommentRepository;
+import com.sangwool.boardproject.repository.NestedCommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +23,7 @@ import java.util.Map;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final NestedCommentRepository nestedCommentRepository;
 
     @Override
     public List<Map<String, String>> getAllComments() {
@@ -34,27 +41,51 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public boolean createComments(CommentUploadDto commentUploadDto) {
+    public CommentDto createComments(CommentUploadDto commentUploadDto) {
 
         try {
 
-            commentRepository.save(commentUploadDto);
-            return true;
-
+            Comment comment = commentRepository.save(commentUploadDto);
+            return CommentDto.buildDto(comment, comment.getCommentUpdateDate());
         } catch (Exception e) {
             log.info("Exception = {}", e.getMessage());
-            return false;
+            return null;
         }
     }
 
     @Override
-    public boolean updateComments(CommentUploadDto commentUploadDto) {
-        return false;
+    public CommentDto updateComments(CommentUpdateDto commentUpdateDto) {
+
+        try {
+
+            Comment commentUpdate = commentRepository.updateComment(commentUpdateDto);
+            return CommentDto.buildDto(commentUpdate, commentUpdate.getCommentUpdateDate());
+        } catch (Exception e) {
+            log.debug("Exception = {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public boolean deleteComments(Long commentSeq) {
-        return false;
+    public boolean deleteComments(CommentDeleteDto commentDeleteDto) {
+
+        Long commentSeq = commentDeleteDto.getCommentSeq();
+
+        try {
+            // 해당 댓글의 대댓글 삭제
+            List<NestedComment> nestedComments = nestedCommentRepository.findAllByCommentSeqNum(commentSeq);
+            nestedComments.forEach(nestedComment -> nestedCommentRepository.deleteNestedComment(nestedComment.getNestedCommentSeq()));
+
+            // 해당 댓글 삭제
+            commentRepository.deleteComment(commentSeq);
+            return true;
+        } catch (NoSuchElementException e) {
+            log.debug("NoSuchElementException = {}", e.getMessage());
+            return false;
+        } catch (Exception e) {
+            log.debug("Exception = {}", e.getMessage());
+            return false;
+        }
     }
 
     private static Map<String, String> makeMap(Comment comment) {
