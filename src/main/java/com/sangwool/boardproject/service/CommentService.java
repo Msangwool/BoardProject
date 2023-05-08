@@ -35,7 +35,7 @@ public interface CommentService {
      * createComments - CommentService |
      * 댓글을 생성한다.
      * @param commentUploadDto 댓글 생성에 필요한 정보를 받아온다.
-     * @return client 에게 필요한 댓글 정보를 반환한다..
+     * @return Client 에게 필요한 댓글 정보를 반환한다..
      */
     CommentDto createComments(CommentUploadDto commentUploadDto);
 
@@ -43,7 +43,7 @@ public interface CommentService {
      * updateComments - CommentService |
      * 댓글을 수정한다.
      * @param commentUpdateDto 댓글 수정에 필요한 정보를 받아온다.
-     * @return client 에게 필요한 댓글 정보를 반환한다..
+     * @return Client 에게 필요한 댓글 정보를 반환한다..
      */
     CommentDto updateComments(CommentUpdateDto commentUpdateDto);
 

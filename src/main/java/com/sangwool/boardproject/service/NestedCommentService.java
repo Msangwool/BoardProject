@@ -33,7 +33,7 @@ public interface NestedCommentService {
      * createNestedComments - NestedCommentService |
      * 대댓글을 생성한다.
      * @param nestedCommentUploadDto 대댓글 생성에 필요한 정보를 받아온다.
-     * @return client 에게 필요한 대댓글 정보를 반환한다.
+     * @return Client 에게 필요한 대댓글 정보를 반환한다.
      */
     NestedCommentDto createNestedComments(NestedCommentUploadDto nestedCommentUploadDto);
 
@@ -41,7 +41,7 @@ public interface NestedCommentService {
      * updateNestedComments - NestedCommentService |
      * 대댓글을 수정한다.
      * @param nestedCommentUpdateDto 대댓글 수정에 필요한 정보를 받아온다.
-     * @return client 에게 필요한 대댓글 정보를 반환한다.
+     * @return Client 에게 필요한 대댓글 정보를 반환한다.
      */
     NestedCommentDto updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto);
 
