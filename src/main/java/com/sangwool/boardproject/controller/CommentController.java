@@ -1,8 +1,11 @@
 package com.sangwool.boardproject.controller;
 
+import com.sangwool.boardproject.dto.CommentDeleteDto;
+import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 import com.sangwool.boardproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/v1/comments")
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
     private final CommentService commentService;
@@ -18,6 +22,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody CommentUploadDto commentUploadDto) {
 
+        log.debug("[CommentController] createComment");
         return ResponseEntity.ok().body(commentService.createComments(commentUploadDto));
     }
 
@@ -25,6 +30,7 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<?> getComments() {
 
+        log.debug("[CommentController] getComments");
         return ResponseEntity.ok().body(commentService.getAllComments());
     }
 
@@ -32,26 +38,30 @@ public class CommentController {
     @GetMapping("/{commentSeq}")
     public ResponseEntity<?> getDetailComment(@PathVariable Long commentSeq) {
 
+        log.debug("[CommentController] getDetailComment");
         return ResponseEntity.ok().body(commentService.getDetailsComment(commentSeq));
     }
 
     @GetMapping("/boards/{boardSeq}")
     public ResponseEntity<?> getCommentsByBoardSeq(@PathVariable Long boardSeq) {
 
+        log.debug("[CommentController] getCommentsByBoardSeq");
         return ResponseEntity.ok().body(commentService.getCommentsByBoardSeq(boardSeq));
     }
 
     // 댓글 수정
     @PutMapping
-    public ResponseEntity<?> updateComment(@RequestBody CommentUploadDto commentUploadDto) {
+    public ResponseEntity<?> updateComment(@RequestBody CommentUpdateDto commentUpdateDto) {
 
-        return ResponseEntity.ok().body(commentService.updateComments(commentUploadDto));
+        log.debug("[CommentController] updateComment");
+        return ResponseEntity.ok().body(commentService.updateComments(commentUpdateDto));
     }
 
     // 댓글 삭제
     @DeleteMapping
-    public ResponseEntity<?> deleteComment(@RequestBody Long commentSeq) {
+    public ResponseEntity<?> deleteComment(@RequestBody CommentDeleteDto commentDeleteDto) {
 
-        return ResponseEntity.ok().body(commentService.deleteComments(commentSeq));
+        log.debug("[CommentController] deleteComment");
+        return ResponseEntity.ok().body(commentService.deleteComments(commentDeleteDto));
     }
 }
