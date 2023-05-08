@@ -1,5 +1,6 @@
 package com.sangwool.boardproject.repository;
 
+import com.sangwool.boardproject.dto.BoardUpdateDto;
 import com.sangwool.boardproject.dto.BoardUploadDto;
 import com.sangwool.boardproject.entity.Board;
 
@@ -11,8 +12,17 @@ public interface BoardRepository {
      * save - BoardRepository |
      * 게시판 업로드 DTO 를 바탕으로 게시판 정보를 DB에 저장한다.
      * @param boardUploadDto 게시판 업로드 DTO 를 받아온다.
+     * @return 생성된 게시판 정보를 반한한다.
      */
-    void save(BoardUploadDto boardUploadDto);
+    Board save(BoardUploadDto boardUploadDto);
+
+    /**
+     * updateBoard - BoardRepository |
+     * 게시판 업데이트 DTO 를 바탕으로 게시판 정보를 수정한다.
+     * @param boardUpdateDto 게시판 업데이트 DTO 를 받아온다.
+     * @return 수정한 게시판 정보를 반환한다.
+     */
+    Board updateBoard(BoardUpdateDto boardUpdateDto);
 
     /**
      * findByBoardSeqNum - BoardRepository |
@@ -35,4 +45,13 @@ public interface BoardRepository {
      * @return 요청한 유저가 작성한 모든 게시판 정보를 반환한다.
      */
     List<Board> findAllByUserSeq(Long userSeq);
+
+    /**
+     * deleteBoard - BoardRepository |
+     * 게시글을 삭제한다.
+     * @param boardSeq 게시판 Sequence 번호를 받아온다.
+     */
+    void deleteBoard(Long boardSeq);
+
+
 }
