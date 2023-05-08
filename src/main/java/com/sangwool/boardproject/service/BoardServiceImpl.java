@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -24,15 +22,20 @@ public class BoardServiceImpl implements BoardService {
     private final CommentRepository commentRepository;
 
     @Override
-    public List<Map<String, String>> getBoards() {
-
-        return boardRepository.findAll().stream().map(BoardServiceImpl::makeMap).toList();
+    public List<BoardDto> getBoards() {
+        return boardRepository.findAll().stream().map(board -> BoardDto.buildDto(board, board.getBoardUpdateDate())).toList();
     }
 
     @Override
-    public Map<String, String> getDetailsBoards(Long boardSeq) {
+    public BoardDto getDetailsBoards(Long boardSeq) {
 
-        return makeMap(boardRepository.findByBoardSeqNum(boardSeq));
+        try {
+            Board board = boardRepository.findByBoardSeqNum(boardSeq);
+            return BoardDto.buildDto(board, board.getBoardUpdateDate());
+        } catch (NullPointerException e) {
+            log.debug("NullPointerException = {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -42,9 +45,8 @@ public class BoardServiceImpl implements BoardService {
 
             Board board = boardRepository.save(boardUploadDto);
             return BoardDto.buildDto(board, board.getBoardUploadDate());
-
         } catch (Exception e) {
-            log.info("Exception = {}", e.getMessage());
+            log.debug("Exception = {}", e.getMessage());
             return null;
         }
     }
@@ -57,9 +59,8 @@ public class BoardServiceImpl implements BoardService {
 
             Board boardUpdate = boardRepository.updateBoard(boardUpdateDto);
             return BoardDto.buildDto(boardUpdate, boardUpdate.getBoardUpdateDate());
-
         } catch (Exception e) {
-            log.info("Exception = {}", e.getMessage());
+            log.debug("Exception = {}", e.getMessage());
             return null;
         }
     }
@@ -90,17 +91,5 @@ public class BoardServiceImpl implements BoardService {
             log.debug("Exception = {}", e.getMessage());
             return false;
         }
-    }
-
-    private static Map<String, String> makeMap(Board board) {
-
-        Map<String, String> map = new HashMap<>();
-
-        map.put("boardTitle", board.getBoardTitle());
-        map.put("userSeq", board.getUserSeq().toString());
-        map.put("boardContent", board.getBoardContent());
-        map.put("boardUpdateDate", board.getBoardUpdateDate());
-
-        return map;
     }
 }

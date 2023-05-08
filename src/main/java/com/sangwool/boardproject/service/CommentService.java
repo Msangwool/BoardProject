@@ -6,7 +6,6 @@ import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 
 import java.util.List;
-import java.util.Map;
 
 public interface CommentService {
 
@@ -14,7 +13,7 @@ public interface CommentService {
      * getAllComments - CommentService |
      * @return 모든 댓글을 반환한다.
      */
-    List<Map<String, String>> getAllComments();
+    List<CommentDto> getAllComments();
 
     /**
      * getDetailsComment - CommentService |
@@ -22,7 +21,7 @@ public interface CommentService {
      * @param commentSeq 댓글 Sequence 번호를 받아온다.
      * @return 해당 댓글 정보를 Map 형태로 반환한다.
      */
-    Map<String, String> getDetailsComment(Long commentSeq);
+    CommentDto getDetailsComment(Long commentSeq);
 
     /**
      * getCommentsByBoardSeq - CommentService |
@@ -30,7 +29,7 @@ public interface CommentService {
      * @param boardSeq 게시글 Sequence 번호를 받아온다.
      * @return 해당 게시글 Sequence 번호를 가진 모든 댓글을 반환한다.
      */
-    List<Map<String, String>> getCommentsByBoardSeq(Long boardSeq);
+    List<CommentDto> getCommentsByBoardSeq(Long boardSeq);
 
     /**
      * createComments - CommentService |

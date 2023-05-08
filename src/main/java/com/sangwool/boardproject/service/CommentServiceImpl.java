@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -26,18 +24,31 @@ public class CommentServiceImpl implements CommentService {
     private final NestedCommentRepository nestedCommentRepository;
 
     @Override
-    public List<Map<String, String>> getAllComments() {
-        return commentRepository.findAll().stream().map(CommentServiceImpl::makeMap).toList();
+    public List<CommentDto> getAllComments() {
+
+        return commentRepository.findAll()
+                .stream().map(comment -> CommentDto.buildDto(comment, comment.getCommentUpdateDate()))
+                .toList();
     }
 
     @Override
-    public Map<String, String> getDetailsComment(Long commentSeq) {
-        return makeMap(commentRepository.findByCommentSeqNum(commentSeq));
+    public CommentDto getDetailsComment(Long commentSeq) {
+
+        try {
+            Comment comment = commentRepository.findByCommentSeqNum(commentSeq);
+
+            return CommentDto.buildDto(comment, comment.getCommentUpdateDate());
+        } catch (NullPointerException e) {
+            log.debug("NullPointerException = {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public List<Map<String, String>> getCommentsByBoardSeq(Long boardSeq) {
-        return commentRepository.findAllByBoardSeqNum(boardSeq).stream().map(CommentServiceImpl::makeMap).toList();
+    public List<CommentDto> getCommentsByBoardSeq(Long boardSeq) {
+        return commentRepository.findAllByBoardSeqNum(boardSeq)
+                .stream().map(comment -> CommentDto.buildDto(comment, comment.getCommentUpdateDate()))
+                .toList();
     }
 
     @Override
@@ -48,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
             Comment comment = commentRepository.save(commentUploadDto);
             return CommentDto.buildDto(comment, comment.getCommentUpdateDate());
         } catch (Exception e) {
-            log.info("Exception = {}", e.getMessage());
+            log.debug("Exception = {}", e.getMessage());
             return null;
         }
     }
@@ -86,17 +97,5 @@ public class CommentServiceImpl implements CommentService {
             log.debug("Exception = {}", e.getMessage());
             return false;
         }
-    }
-
-    private static Map<String, String> makeMap(Comment comment) {
-
-        Map<String, String> map = new HashMap<>();
-
-        map.put("boardSeq", comment.getBoardSeq().toString());
-        map.put("userSeq", comment.getUserSeq().toString());
-        map.put("commentContent", comment.getCommentContent());
-        map.put("commentUpdateDate", comment.getCommentUpdateDate());
-
-        return map;
     }
 }

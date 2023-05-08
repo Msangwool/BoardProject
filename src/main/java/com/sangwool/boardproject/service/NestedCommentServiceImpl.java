@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -23,18 +21,31 @@ public class NestedCommentServiceImpl implements NestedCommentService {
     private final NestedCommentRepository nestedCommentRepository;
 
     @Override
-    public List<Map<String, String>> getAllNestedComments() {
-        return nestedCommentRepository.findAll().stream().map(NestedCommentServiceImpl::makeMap).toList();
+    public List<NestedCommentDto> getAllNestedComments() {
+        return nestedCommentRepository.findAll()
+                .stream()
+                .map(nestedComment -> NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUpdateDate()))
+                .toList();
     }
 
     @Override
-    public Map<String, String> getDetailsNestedComment(Long nestedCommentSeq) {
-        return makeMap(nestedCommentRepository.findByCommentSeqNum(nestedCommentSeq));
+    public NestedCommentDto getDetailsNestedComment(Long nestedCommentSeq) {
+
+        try {
+            NestedComment nestedComment = nestedCommentRepository.findByCommentSeqNum(nestedCommentSeq);
+            return NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUpdateDate());
+        } catch (NullPointerException e) {
+            log.debug("NullPointerException = {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public List<Map<String, String>> getNestedCommentsByCommentSeq(Long commentSeq) {
-        return nestedCommentRepository.findAllByCommentSeqNum(commentSeq).stream().map(NestedCommentServiceImpl::makeMap).toList();
+    public List<NestedCommentDto> getNestedCommentsByCommentSeq(Long commentSeq) {
+        return nestedCommentRepository.findAllByCommentSeqNum(commentSeq)
+                .stream()
+                .map(nestedComment -> NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUpdateDate()))
+                .toList();
     }
 
     @Override
@@ -45,7 +56,7 @@ public class NestedCommentServiceImpl implements NestedCommentService {
             NestedComment nestedComment = nestedCommentRepository.save(nestedCommentUploadDto);
             return NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUploadDate());
         } catch (Exception e) {
-            log.info("Exception = {}", e.getMessage());
+            log.debug("Exception = {}", e.getMessage());
             return null;
         }
     }
@@ -78,17 +89,5 @@ public class NestedCommentServiceImpl implements NestedCommentService {
             log.debug("Exception = {}", e.getMessage());
             return false;
         }
-    }
-
-    private static Map<String, String> makeMap(NestedComment nestedComment) {
-
-        Map<String, String> map = new HashMap<>();
-
-        map.put("commentSeq", nestedComment.getCommentSeq().toString());
-        map.put("userSeq", nestedComment.getUserSeq().toString());
-        map.put("nestedCommentContent", nestedComment.getNestedCommentContent());
-        map.put("nestedCommentUpdateDate", nestedComment.getNestedCommentUpdateDate());
-
-        return map;
     }
 }
