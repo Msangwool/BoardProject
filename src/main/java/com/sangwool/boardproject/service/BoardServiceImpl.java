@@ -3,13 +3,12 @@ package com.sangwool.boardproject.service;
 import com.sangwool.boardproject.dto.*;
 import com.sangwool.boardproject.entity.Board;
 import com.sangwool.boardproject.repository.BoardRepository;
-import com.sangwool.boardproject.usecase.Delete;
+import com.sangwool.boardproject.usecase.DeleteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ import java.util.NoSuchElementException;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final Delete delete;
+    private final DeleteService deleteService;
 
     @Override
     public List<BoardDto> getBoards() {
@@ -68,6 +67,6 @@ public class BoardServiceImpl implements BoardService {
 
         Long boardSeq = boardDeleteDto.getBoardSeq();
 
-        return delete.boardDelete(boardSeq);
+        return deleteService.boardDelete(boardSeq);
     }
 }

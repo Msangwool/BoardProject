@@ -6,7 +6,7 @@ import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 import com.sangwool.boardproject.entity.Comment;
 import com.sangwool.boardproject.repository.CommentRepository;
-import com.sangwool.boardproject.usecase.Delete;
+import com.sangwool.boardproject.usecase.DeleteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final Delete delete;
+    private final DeleteService deleteService;
 
     @Override
     public List<CommentDto> getAllComments() {
@@ -80,6 +80,6 @@ public class CommentServiceImpl implements CommentService {
 
         Long commentSeq = commentDeleteDto.getCommentSeq();
 
-        return delete.commentDelete(commentSeq);
+        return deleteService.commentDelete(commentSeq);
     }
 }
