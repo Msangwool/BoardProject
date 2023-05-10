@@ -5,15 +5,13 @@ import com.sangwool.boardproject.dto.CommentDto;
 import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 import com.sangwool.boardproject.entity.Comment;
-import com.sangwool.boardproject.entity.NestedComment;
 import com.sangwool.boardproject.repository.CommentRepository;
-import com.sangwool.boardproject.repository.NestedCommentRepository;
+import com.sangwool.boardproject.usecase.Delete;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +19,7 @@ import java.util.NoSuchElementException;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final NestedCommentRepository nestedCommentRepository;
+    private final Delete delete;
 
     @Override
     public List<CommentDto> getAllComments() {
@@ -82,20 +80,6 @@ public class CommentServiceImpl implements CommentService {
 
         Long commentSeq = commentDeleteDto.getCommentSeq();
 
-        try {
-            // 해당 댓글의 대댓글 삭제
-            List<NestedComment> nestedComments = nestedCommentRepository.findAllByCommentSeqNum(commentSeq);
-            nestedComments.forEach(nestedComment -> nestedCommentRepository.deleteNestedComment(nestedComment.getNestedCommentSeq()));
-
-            // 해당 댓글 삭제
-            commentRepository.deleteComment(commentSeq);
-            return true;
-        } catch (NoSuchElementException e) {
-            log.debug("NoSuchElementException = {}", e.getMessage());
-            return false;
-        } catch (Exception e) {
-            log.debug("Exception = {}", e.getMessage());
-            return false;
-        }
+        return delete.commentDelete(commentSeq);
     }
 }
