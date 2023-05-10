@@ -2,9 +2,8 @@ package com.sangwool.boardproject.service;
 
 import com.sangwool.boardproject.dto.*;
 import com.sangwool.boardproject.entity.Board;
-import com.sangwool.boardproject.entity.Comment;
 import com.sangwool.boardproject.repository.BoardRepository;
-import com.sangwool.boardproject.repository.CommentRepository;
+import com.sangwool.boardproject.usecase.Delete;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,7 @@ import java.util.NoSuchElementException;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final CommentService commentService;
-    private final CommentRepository commentRepository;
+    private final Delete delete;
 
     @Override
     public List<BoardDto> getBoards() {
@@ -70,26 +68,6 @@ public class BoardServiceImpl implements BoardService {
 
         Long boardSeq = boardDeleteDto.getBoardSeq();
 
-        try {
-            // 해당 게시글 번호로 된 모든 댓글을 삭제한다.
-            List<Comment> comments = commentRepository.findAllByBoardSeqNum(boardSeq);
-            comments.forEach(comment ->
-                    commentService.deleteComments(
-                            CommentDeleteDto.builder()
-                                    .commentSeq(comment.getCommentSeq())
-                                    .build()
-                    )
-            );
-
-            // 게시글을 삭제한다.
-            boardRepository.deleteBoard(boardSeq);
-            return true;
-        } catch (NoSuchElementException e) {
-            log.debug("NoSuchElementException = {}", e.getMessage());
-            return false;
-        } catch (Exception e) {
-            log.debug("Exception = {}", e.getMessage());
-            return false;
-        }
+        return delete.boardDelete(boardSeq);
     }
 }
