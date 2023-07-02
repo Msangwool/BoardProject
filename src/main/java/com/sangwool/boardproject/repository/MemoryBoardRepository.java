@@ -27,6 +27,7 @@ public class MemoryBoardRepository implements BoardRepository {
                 .boardContent(boardUploadDto.getBoardContent())
                 .boardUploadDate(new Date(System.currentTimeMillis()).toString())
                 .boardUpdateDate(new Date(System.currentTimeMillis()).toString())
+                .boardCategory(boardUploadDto.getBoardCategory())
                 .build();
         boardMap.put(boardSeqNum, board);
 
@@ -67,6 +68,7 @@ public class MemoryBoardRepository implements BoardRepository {
                     .boardContent(boardUpdateDto.getBoardContent())
                     .boardUploadDate(board.getBoardUploadDate())
                     .boardUpdateDate(new Date(System.currentTimeMillis()).toString())
+                    .boardCategory(boardUpdateDto.getBoardCategory())
                     .build();
             boardMap.replace(boardSeq, boardUpdate);
 
