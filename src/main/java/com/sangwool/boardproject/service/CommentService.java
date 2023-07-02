@@ -6,6 +6,7 @@ import com.sangwool.boardproject.dto.CommentUpdateDto;
 import com.sangwool.boardproject.dto.CommentUploadDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentService {
 
@@ -37,7 +38,7 @@ public interface CommentService {
      * @param commentUploadDto 댓글 생성에 필요한 정보를 받아온다.
      * @return Client 에게 필요한 댓글 정보를 반환한다..
      */
-    CommentDto createComments(CommentUploadDto commentUploadDto);
+    Optional<CommentDto> createComments(CommentUploadDto commentUploadDto);
 
     /**
      * updateComments - CommentService |
@@ -45,7 +46,7 @@ public interface CommentService {
      * @param commentUpdateDto 댓글 수정에 필요한 정보를 받아온다.
      * @return Client 에게 필요한 댓글 정보를 반환한다..
      */
-    CommentDto updateComments(CommentUpdateDto commentUpdateDto);
+    Optional<CommentDto> updateComments(CommentUpdateDto commentUpdateDto);
 
     /**
      * getDetailsComment - CommentService |

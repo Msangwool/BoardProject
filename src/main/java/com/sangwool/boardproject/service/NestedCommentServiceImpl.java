@@ -6,12 +6,14 @@ import com.sangwool.boardproject.dto.NestedCommentUpdateDto;
 import com.sangwool.boardproject.dto.NestedCommentUploadDto;
 import com.sangwool.boardproject.entity.NestedComment;
 import com.sangwool.boardproject.repository.NestedCommentRepository;
+import com.sangwool.boardproject.usecase.ValidService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ import java.util.NoSuchElementException;
 public class NestedCommentServiceImpl implements NestedCommentService {
 
     private final NestedCommentRepository nestedCommentRepository;
+    private final ValidService validService;
 
     @Override
     public List<NestedCommentDto> getAllNestedComments() {
@@ -49,28 +52,31 @@ public class NestedCommentServiceImpl implements NestedCommentService {
     }
 
     @Override
-    public NestedCommentDto createNestedComments(NestedCommentUploadDto nestedCommentUploadDto) {
+    public Optional<NestedCommentDto> createNestedComments(NestedCommentUploadDto nestedCommentUploadDto) {
 
         try {
 
+            if (!validService.isComment(nestedCommentUploadDto.getCommentSeq())) {
+                return Optional.empty();
+            }
             NestedComment nestedComment = nestedCommentRepository.save(nestedCommentUploadDto);
-            return NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUploadDate());
+            return Optional.of(NestedCommentDto.buildDto(nestedComment, nestedComment.getNestedCommentUploadDate()));
         } catch (Exception e) {
             log.debug("Exception = {}", e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public NestedCommentDto updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto) {
+    public Optional<NestedCommentDto> updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto) {
 
         try {
 
             NestedComment nestedCommentUpdate = nestedCommentRepository.updateNestedComment(nestedCommentUpdateDto);
-            return NestedCommentDto.buildDto(nestedCommentUpdate, nestedCommentUpdate.getNestedCommentUpdateDate());
+            return Optional.of(NestedCommentDto.buildDto(nestedCommentUpdate, nestedCommentUpdate.getNestedCommentUpdateDate()));
         } catch (Exception e) {
             log.debug("Exception = {}", e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 

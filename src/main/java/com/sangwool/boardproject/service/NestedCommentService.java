@@ -5,7 +5,9 @@ import com.sangwool.boardproject.dto.NestedCommentDto;
 import com.sangwool.boardproject.dto.NestedCommentUpdateDto;
 import com.sangwool.boardproject.dto.NestedCommentUploadDto;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 public interface NestedCommentService {
 
@@ -35,7 +37,7 @@ public interface NestedCommentService {
      * @param nestedCommentUploadDto 대댓글 생성에 필요한 정보를 받아온다.
      * @return Client 에게 필요한 대댓글 정보를 반환한다.
      */
-    NestedCommentDto createNestedComments(NestedCommentUploadDto nestedCommentUploadDto);
+    Optional<NestedCommentDto> createNestedComments(NestedCommentUploadDto nestedCommentUploadDto);
 
     /**
      * updateNestedComments - NestedCommentService |
@@ -43,7 +45,7 @@ public interface NestedCommentService {
      * @param nestedCommentUpdateDto 대댓글 수정에 필요한 정보를 받아온다.
      * @return Client 에게 필요한 대댓글 정보를 반환한다.
      */
-    NestedCommentDto updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto);
+    Optional<NestedCommentDto> updateNestedComments(NestedCommentUpdateDto nestedCommentUpdateDto);
 
     /**
      * deleteNestedComments - NestedCommentService |

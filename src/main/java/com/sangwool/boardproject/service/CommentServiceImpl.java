@@ -7,11 +7,13 @@ import com.sangwool.boardproject.dto.CommentUploadDto;
 import com.sangwool.boardproject.entity.Comment;
 import com.sangwool.boardproject.repository.CommentRepository;
 import com.sangwool.boardproject.usecase.DeleteService;
+import com.sangwool.boardproject.usecase.ValidService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final DeleteService deleteService;
+    private final ValidService validService;
 
     @Override
     public List<CommentDto> getAllComments() {
@@ -50,28 +53,31 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto createComments(CommentUploadDto commentUploadDto) {
+    public Optional<CommentDto> createComments(CommentUploadDto commentUploadDto) {
 
         try {
 
+            if (!validService.isBoard(commentUploadDto.getBoardSeq())) {
+                return Optional.empty();
+            }
             Comment comment = commentRepository.save(commentUploadDto);
-            return CommentDto.buildDto(comment, comment.getCommentUpdateDate());
+            return Optional.of(CommentDto.buildDto(comment, comment.getCommentUpdateDate()));
         } catch (Exception e) {
             log.debug("Exception = {}", e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public CommentDto updateComments(CommentUpdateDto commentUpdateDto) {
+    public Optional<CommentDto> updateComments(CommentUpdateDto commentUpdateDto) {
 
         try {
 
             Comment commentUpdate = commentRepository.updateComment(commentUpdateDto);
-            return CommentDto.buildDto(commentUpdate, commentUpdate.getCommentUpdateDate());
+            return Optional.of(CommentDto.buildDto(commentUpdate, commentUpdate.getCommentUpdateDate()));
         } catch (Exception e) {
             log.debug("Exception = {}", e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 
