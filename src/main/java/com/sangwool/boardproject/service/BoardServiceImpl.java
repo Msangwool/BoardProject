@@ -19,15 +19,20 @@ public class BoardServiceImpl implements BoardService {
     private final DeleteService deleteService;
 
     @Override
-    public List<BoardDto> getBoards() {
-        return boardRepository.findAll().stream().map(board -> BoardDto.buildDto(board, board.getBoardUpdateDate())).toList();
+    public List<BoardDto> getBoards(String boardCategory) {
+        return boardRepository.findAll().stream()
+                .filter(board -> board.getBoardCategory().equals(boardCategory))
+                .map(board -> BoardDto.buildDto(board, board.getBoardUpdateDate())).toList();
     }
 
     @Override
-    public BoardDto getDetailsBoards(Long boardSeq) {
+    public BoardDto getDetailsBoards(String boardCategory, Long boardSeq) {
 
         try {
             Board board = boardRepository.findByBoardSeqNum(boardSeq);
+            if (!board.getBoardCategory().equals(boardCategory)) {
+                return null;
+            }
             return BoardDto.buildDto(board, board.getBoardUpdateDate());
         } catch (NullPointerException e) {
             log.debug("NullPointerException = {}", e.getMessage());

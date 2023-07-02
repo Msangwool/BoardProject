@@ -13,14 +13,14 @@ public interface BoardService {
      * getBoards - BoardService |
      * @return 게시글 목록을 반환한다.
      */
-    List<BoardDto> getBoards();
+    List<BoardDto> getBoards(String boardCategory);
 
     /**
      * getDetailsBoards - BoardService |
      * @param boardSeq 게시글 Sequence 번호를 받아온다.
      * @return 해당 게시글 내용을 Map 형태로 반환한다.
      */
-    BoardDto getDetailsBoards(Long boardSeq);
+    BoardDto getDetailsBoards(String boardCategory, Long boardSeq);
 
     /**
      * createBoards - BoardService |
