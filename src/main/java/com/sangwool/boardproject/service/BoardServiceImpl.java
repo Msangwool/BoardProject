@@ -70,8 +70,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean deleteBoards(BoardDeleteDto boardDeleteDto) {
 
-        Long boardSeq = boardDeleteDto.getBoardSeq();
-
-        return deleteService.boardDelete(boardSeq);
+        return deleteService.boardDelete(boardDeleteDto);
     }
 }

@@ -84,8 +84,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public boolean deleteComments(CommentDeleteDto commentDeleteDto) {
 
-        Long commentSeq = commentDeleteDto.getCommentSeq();
-
-        return deleteService.commentDelete(commentSeq);
+        return deleteService.commentDelete(commentDeleteDto);
     }
 }
