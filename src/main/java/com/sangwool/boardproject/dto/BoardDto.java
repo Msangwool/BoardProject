@@ -13,14 +13,16 @@ public class BoardDto {
     private final Long userSeq;                 // 게시글 작성자
     private final String boardContent;          // 게시글 내용
     private final String boardDate;             // 등록 or 수정 시간
+    private final String boardCategory;         // 게시판 종류
 
     @Builder
-    public BoardDto(Long boardSeq, String boardTitle, Long userSeq, String boardContent, String boardDate) {
+    public BoardDto(Long boardSeq, String boardTitle, Long userSeq, String boardContent, String boardDate, String boardCategory) {
         this.boardSeq = boardSeq;
         this.boardTitle = boardTitle;
         this.userSeq = userSeq;
         this.boardContent = boardContent;
         this.boardDate = boardDate;
+        this.boardCategory = boardCategory;
     }
 
     public static BoardDto buildDto(Board board, String date) {
@@ -30,6 +32,7 @@ public class BoardDto {
                 .userSeq(board.getUserSeq())
                 .boardContent(board.getBoardContent())
                 .boardDate(date)
+                .boardCategory(board.getBoardCategory())
                 .build();
     }
 }
