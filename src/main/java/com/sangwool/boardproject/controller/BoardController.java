@@ -20,31 +20,32 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping
-    public ResponseEntity<?> createBoard(@RequestBody BoardUploadDto boardUploadDto) {
+    public ResponseEntity<?> createBoard(@ModelAttribute BoardUploadDto boardUploadDto) {
 
         log.debug("[BoardController] createBoard");
         return ResponseEntity.ok().body(boardService.createBoards(boardUploadDto));
     }
 
     // 게시글 목록 조회
-    @GetMapping
-    public ResponseEntity<?> getBoards() {
+    @GetMapping("/{boardCategory}")
+    public ResponseEntity<?> getBoards(@PathVariable String boardCategory) {
 
         log.debug("[BoardController] getBoards");
-        return ResponseEntity.ok().body(boardService.getBoards());
+        return ResponseEntity.ok().body(boardService.getBoards(boardCategory));
     }
 
     // 게시글 상세 조회
-    @GetMapping("/{boardSeq}")
-    public ResponseEntity<?> getDetailsBoard(@PathVariable Long boardSeq) {
+    @GetMapping("/{boardCategory}/{boardSeq}")
+    public ResponseEntity<?> getDetailsBoard(@PathVariable String boardCategory,
+                                             @PathVariable Long boardSeq) {
 
         log.debug("[BoardController] getDetailsBoard");
-        return ResponseEntity.ok().body(boardService.getDetailsBoards(boardSeq));
+        return ResponseEntity.ok().body(boardService.getDetailsBoards(boardCategory, boardSeq));
     }
 
     // 게시글 수정
     @PutMapping
-    public ResponseEntity<?> updateBoard(@RequestBody BoardUpdateDto boardUpdateDto) {
+    public ResponseEntity<?> updateBoard(@ModelAttribute BoardUpdateDto boardUpdateDto) {
 
         log.debug("[BoardController] updateBoard");
         return ResponseEntity.ok().body(boardService.updateBoards(boardUpdateDto));
