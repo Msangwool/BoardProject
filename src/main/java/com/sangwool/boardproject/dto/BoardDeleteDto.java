@@ -10,9 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BoardDeleteDto {
     private Long boardSeq;                      // 게시글 Sequence 번호
+    private Long userSeq;                       // 유저 Sequence 번호
 
     @Builder
-    public BoardDeleteDto(Long boardSeq) {
+    public BoardDeleteDto(Long boardSeq, Long userSeq) {
         this.boardSeq = boardSeq;
+        this.userSeq = userSeq;
     }
 }

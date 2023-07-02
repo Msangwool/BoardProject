@@ -11,9 +11,18 @@ import lombok.Setter;
 public class CommentDeleteDto {
 
     private Long commentSeq;                            // 댓글 Sequence 번호
+    private Long userSeq;                                   // 유저 Sequence 번호
 
     @Builder
-    public CommentDeleteDto(Long commentSeq) {
+    public CommentDeleteDto(Long commentSeq, Long userSeq) {
         this.commentSeq = commentSeq;
+        this.userSeq = userSeq;
+    }
+
+    public static CommentDeleteDto buildDto(Long commentSeq, Long userSeq) {
+        return CommentDeleteDto.builder()
+                .commentSeq(commentSeq)
+                .userSeq(userSeq)
+                .build();
     }
 }
