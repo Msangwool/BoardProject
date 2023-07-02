@@ -1,14 +1,18 @@
 package com.sangwool.boardproject.controller;
 
 import com.sangwool.boardproject.dto.NestedCommentDeleteDto;
+import com.sangwool.boardproject.dto.NestedCommentDto;
 import com.sangwool.boardproject.dto.NestedCommentUpdateDto;
 import com.sangwool.boardproject.dto.NestedCommentUploadDto;
 import com.sangwool.boardproject.service.NestedCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/v1/nestedComments")
@@ -23,7 +27,11 @@ public class NestedCommentController {
     public ResponseEntity<?> createNestedComment(@RequestBody NestedCommentUploadDto nestedCommentUploadDto) {
 
         log.debug("[NestedCommentController] createNestedComment");
-        return ResponseEntity.ok().body(nestedCommentService.createNestedComments(nestedCommentUploadDto));
+        Optional<NestedCommentDto> nestedCommentDto = nestedCommentService.createNestedComments(nestedCommentUploadDto);
+        if (nestedCommentDto.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok().body(nestedCommentDto.get());
     }
 
     // 댓글 목록 조회
@@ -54,7 +62,11 @@ public class NestedCommentController {
     public ResponseEntity<?> updateNestedComment(@RequestBody NestedCommentUpdateDto nestedCommentUpdateDto) {
 
         log.debug("[NestedCommentController] updateNestedComment");
-        return ResponseEntity.ok().body(nestedCommentService.updateNestedComments(nestedCommentUpdateDto));
+        Optional<NestedCommentDto> nestedCommentDto = nestedCommentService.updateNestedComments(nestedCommentUpdateDto);
+        if (nestedCommentDto.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok().body(nestedCommentDto.get());
     }
 
     // 댓글 삭제
