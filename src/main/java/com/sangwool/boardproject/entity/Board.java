@@ -12,11 +12,11 @@ public class Board {
     private final String boardContent;          // 게시글 내용
     private final String boardUploadDate;       // 게시글 작성시간
     private final String boardUpdateDate;       // 게시글 수정시간
-    private final String boardCategory;         // 게시글 종류
+    private final Long boardCategory;         // 게시글 종류
 
     @Builder
     public Board(Long boardSeq, String boardTitle, Long userSeq,
-                 String boardContent, String boardUploadDate, String boardUpdateDate, String boardCategory) {
+                 String boardContent, String boardUploadDate, String boardUpdateDate, Long boardCategory) {
         this.boardSeq = boardSeq;
         this.boardTitle = boardTitle;
         this.userSeq = userSeq;
