@@ -12,10 +12,10 @@ public class BoardUpdateDto {
     private final String boardTitle;            // 게시글 제목
     private final Long userSeq;                 // 게시글 작성자
     private final String boardContent;          // 게시글 내용
-    private final String boardCategory;         // 게시글 종류
+    private final Long boardCategory;         // 게시글 종류
 
     @Builder
-    public BoardUpdateDto(Long boardSeq, String boardTitle, Long userSeq, String boardContent, String boardCategory) {
+    public BoardUpdateDto(Long boardSeq, String boardTitle, Long userSeq, String boardContent, Long boardCategory) {
         this.boardSeq = boardSeq;
         this.boardTitle = boardTitle;
         this.userSeq = userSeq;
