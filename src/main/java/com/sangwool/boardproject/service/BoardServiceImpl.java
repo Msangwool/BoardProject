@@ -19,14 +19,14 @@ public class BoardServiceImpl implements BoardService {
     private final DeleteService deleteService;
 
     @Override
-    public List<BoardDto> getBoards(String boardCategory) {
+    public List<BoardDto> getBoards(Long boardCategory) {
         return boardRepository.findAll().stream()
                 .filter(board -> board.getBoardCategory().equals(boardCategory))
                 .map(board -> BoardDto.buildDto(board, board.getBoardUpdateDate())).toList();
     }
 
     @Override
-    public BoardDto getDetailsBoards(String boardCategory, Long boardSeq) {
+    public BoardDto getDetailsBoards(Long boardCategory, Long boardSeq) {
 
         try {
             Board board = boardRepository.findByBoardSeqNum(boardSeq);
