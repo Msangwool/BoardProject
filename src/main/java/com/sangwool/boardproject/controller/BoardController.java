@@ -28,7 +28,7 @@ public class BoardController {
 
     // 게시글 목록 조회
     @GetMapping("/{boardCategory}")
-    public ResponseEntity<?> getBoards(@PathVariable String boardCategory) {
+    public ResponseEntity<?> getBoards(@PathVariable Long boardCategory) {
 
         log.debug("[BoardController] getBoards");
         return ResponseEntity.ok().body(boardService.getBoards(boardCategory));
@@ -36,7 +36,7 @@ public class BoardController {
 
     // 게시글 상세 조회
     @GetMapping("/{boardCategory}/{boardSeq}")
-    public ResponseEntity<?> getDetailsBoard(@PathVariable String boardCategory,
+    public ResponseEntity<?> getDetailsBoard(@PathVariable Long boardCategory,
                                              @PathVariable Long boardSeq) {
 
         log.debug("[BoardController] getDetailsBoard");
